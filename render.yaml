@@ -5,7 +5,7 @@ services:
     plan: free
     region: oregon  # You can change this to match your preferred region
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    startCommand: gunicorn --bind 0.0.0.0:$PORT gamestarmd:app
     envVars:
       - key: TWILIO_ACCOUNT_SID
         sync: false
@@ -17,11 +17,5 @@ services:
         sync: false
       - key: ZENSERP_ENDPOINT
         sync: false
-  - type: web
-    name: gamestarmd
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --bind 0.0.0.0:5000 gamestarmd:app
-    envVars:
       - key: PORT
         value: "5000"
