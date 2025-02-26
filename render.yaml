@@ -3,4 +3,7 @@ services:
     name: gamestarmd
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: waitress-serve --listen=0.0.0.0:$PORT gamestarmd:app
+    startCommand: gunicorn --bind 0.0.0.0:5000 gamestarmd:app
+    envVars:
+      - key: PORT
+        value: "5000"
