@@ -53,6 +53,6 @@ def sms_reply():
     return str(response)
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-    
+   port = int(os.environ.get("PORT", 5000))
+app.run(host="0.0.0.0", port=port)
+# The deploygamestarmd.py script is a Flask application that uses the Zenserp API to perform web searches and send the results via SMS using Twilio. The script defines routes for handling search queries and Twilio SMS messages, and includes functions to interact with the Zenserp API. The script also loads environment variables from a .env file and starts the Flask application on a specified port. The script is designed to be deployed as a web service to handle search queries and SMS responses.
