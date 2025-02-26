@@ -1,6 +1,7 @@
 import os
 import requests
 from flask import Flask, request
+from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
 
@@ -10,10 +11,7 @@ ZENSERP_ENDPOINT = "https://app.zenserp.com/api/v2/search"
 
 # Zenserp Search Function
 def zenserp_search(query):
-    params = {
-        "q": query,
-        "apikey": ZENSERP_API_KEY,
-    }
+    params = {"q": query, "apikey": ZENSERP_API_KEY}
     response = requests.get(ZENSERP_ENDPOINT, params=params)
     return response.json() if response.status_code == 200 else {"error": "Failed to fetch results"}
 
@@ -30,15 +28,11 @@ def search():
 # New Route for Twilio SMS Handling
 @app.route("/sms", methods=["POST"])
 def sms_reply():
-    from twilio.twiml.messaging_response import MessagingResponse
-
-    # Get the SMS content
     incoming_msg = request.form.get("Body", "").strip()
 
-    # Perform a search if a query is given
     if incoming_msg:
         search_results = zenserp_search(incoming_msg)
-        first_result = search_results.get("organic", [{}])[0]  # Extract first result
+        first_result = search_results.get("organic", [{}])[0]
 
         title = first_result.get("title", "No title found")
         link = first_result.get("url", "No link found")
@@ -47,12 +41,12 @@ def sms_reply():
     else:
         reply_text = "Please send a search query."
 
-    # Twilio Response
     response = MessagingResponse()
     response.message(reply_text)
     return str(response)
 
+# Ensure PORT is defined globally
+port = int(os.environ.get("PORT", 5000))
+
 if __name__ == "__main__":
-   port = int(os.environ.get("PORT", 5000))
-app.run(host="0.0.0.0", port=port)
-# The deploygamestarmd.py script is a Flask application that uses the Zenserp API to perform web searches and send the results via SMS using Twilio. The script defines routes for handling search queries and Twilio SMS messages, and includes functions to interact with the Zenserp API. The script also loads environment variables from a .env file and starts the Flask application on a specified port. The script is designed to be deployed as a web service to handle search queries and SMS responses.
+    app.run(host="0.0.0.0", port=port)
