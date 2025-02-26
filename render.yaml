@@ -2,6 +2,24 @@ services:
   - type: web
     name: gamestarmd
     env: python
+    plan: free
+    region: oregon  # You can change this to match your preferred region
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_PHONE_NUMBER
+        sync: false
+      - key: ZENSERP_API_KEY
+        sync: false
+      - key: ZENSERP_ENDPOINT
+        sync: false
+  - type: web
+    name: gamestarmd
+    env: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn --bind 0.0.0.0:5000 gamestarmd:app
     envVars:
