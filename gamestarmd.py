@@ -5,8 +5,8 @@ from flask import Flask, request
 app = Flask(__name__)
 
 # Zenserp API Credentials
-ZENSERP_API_KEY = "xxx"
-ZENSERP_ENDPOINT = "yyy"
+ZENSERP_API_KEY = "8d38a4d0-f099-11ef-a5fc-b1de60a7a21d"
+ZENSERP_ENDPOINT = "https://app.zenserp.com/api/v2/search"
 
 # Zenserp Search Function
 def zenserp_search(query):
